@@ -1,0 +1,17 @@
+{
+  "name": "Nutricao-Visitas-Realizadas",
+  "short_name": "Nutricao-Visitas-Realizadas",
+  "description": "Sistema de gestão de visitas-realizadas",
+  "start_url": "/",
+  "display": "standalone",
+  "lang": "pt-BR",
+  "background_color": "#ffffff",
+  "theme_color": "#7c3aed",
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "1536x1024",
+      "type": "image/png"
+    }
+  ]
+}
