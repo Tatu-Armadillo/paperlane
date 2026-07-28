@@ -1,21 +1,11 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  HttpCode,
-  Param,
-  ParseIntPipe,
-  Post,
-  Put,
-  Query,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, ParseIntPipe, Post, Put, Query, UseGuards, } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto, UpdateCategoryDto } from './dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('categories')
 export class CategoriesController {
-  constructor(private readonly service: CategoriesService) {}
+  constructor(private readonly service: CategoriesService) { }
 
   @Get()
   list(
@@ -40,11 +30,13 @@ export class CategoriesController {
   }
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   create(@Body() dto: CreateCategoryDto) {
     return this.service.create(dto);
   }
 
   @Put(':id')
+  @UseGuards(JwtAuthGuard)
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: UpdateCategoryDto,
@@ -53,6 +45,7 @@ export class CategoriesController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   @HttpCode(204)
   async remove(@Param('id', ParseIntPipe) id: number) {
     await this.service.remove(id);

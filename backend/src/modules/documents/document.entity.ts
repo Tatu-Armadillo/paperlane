@@ -8,7 +8,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Category } from '../categories/category.entity';
+import { CategoryEntity } from '../categories/category.entity';
+import { UserEntity } from '../users/user.entity';
 
 export type DocumentType =
   | 'article'
@@ -40,13 +41,13 @@ export class DocumentEntity {
   @Column({ type: 'text' })
   description: string;
 
-  @ManyToOne(() => Category, (c) => c.documents, {
+  @ManyToOne(() => CategoryEntity, (c) => c.documents, {
     eager: true,
     nullable: false,
     onDelete: 'RESTRICT',
   })
   @JoinColumn({ name: 'category_id' })
-  category: Category;
+  category: CategoryEntity;
 
   // File storage metadata (files live on disk; DB only holds references)
   @Column({ type: 'varchar', length: 260, name: 'stored_filename' })
@@ -66,6 +67,13 @@ export class DocumentEntity {
 
   @Column({ type: 'text', name: 'text_content', nullable: true })
   textContent: string | null;
+
+  @ManyToOne(() => UserEntity, (user) => user.documents, { eager: true })
+  @JoinColumn({ name: 'userId' })
+  user: UserEntity;
+
+  @Column()
+  userId: string;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

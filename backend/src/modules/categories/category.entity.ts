@@ -1,14 +1,8 @@
-import {
-  Column,
-  Entity,
-  Index,
-  PrimaryGeneratedColumn,
-  OneToMany,
-} from 'typeorm';
+import { Column, Entity, Index, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { DocumentEntity } from '../documents/document.entity';
 
 @Entity('categories')
-export class Category {
+export class CategoryEntity {
   @PrimaryGeneratedColumn()
   id: number;
 

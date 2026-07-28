@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, ILike } from 'typeorm';
-import { Category } from './category.entity';
+import { CategoryEntity } from './category.entity';
 import { CreateCategoryDto, UpdateCategoryDto } from './dto';
 import { DocumentEntity } from '../documents/document.entity';
 
@@ -20,8 +20,8 @@ export interface ListCategoriesQuery {
 @Injectable()
 export class CategoriesService {
   constructor(
-    @InjectRepository(Category)
-    private readonly repo: Repository<Category>,
+    @InjectRepository(CategoryEntity)
+    private readonly repo: Repository<CategoryEntity>,
     @InjectRepository(DocumentEntity)
     private readonly documentsRepo: Repository<DocumentEntity>,
   ) {}
@@ -62,17 +62,17 @@ export class CategoriesService {
     };
   }
 
-  async findOne(id: number): Promise<Category> {
+  async findOne(id: number): Promise<CategoryEntity> {
     const cat = await this.repo.findOne({ where: { id } });
     if (!cat) throw new NotFoundException(`Category ${id} not found`);
     return cat;
   }
 
-  async findByKey(key: string): Promise<Category | null> {
+  async findByKey(key: string): Promise<CategoryEntity | null> {
     return this.repo.findOne({ where: { key } });
   }
 
-  async create(dto: CreateCategoryDto): Promise<Category> {
+  async create(dto: CreateCategoryDto): Promise<CategoryEntity> {
     const dup = await this.repo.findOne({ where: { key: dto.key } });
     if (dup) {
       throw new ConflictException(`Category key "${dto.key}" already exists`);
@@ -81,7 +81,7 @@ export class CategoriesService {
     return this.repo.save(entity);
   }
 
-  async update(id: number, dto: UpdateCategoryDto): Promise<Category> {
+  async update(id: number, dto: UpdateCategoryDto): Promise<CategoryEntity> {
     const cat = await this.findOne(id);
     if (dto.key !== cat.key) {
       const dup = await this.repo.findOne({ where: { key: dto.key } });

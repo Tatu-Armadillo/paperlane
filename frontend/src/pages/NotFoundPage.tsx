@@ -11,7 +11,7 @@ export default function NotFoundPage() {
         icon={Compass}
         testId="not-found"
         action={
-          <Link to="/" className="paper-btn-primary">
+          <Link to="/home" className="paper-btn-primary">
             Back to library
           </Link>
         }

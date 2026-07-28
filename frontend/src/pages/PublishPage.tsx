@@ -34,7 +34,7 @@ export default function PublishPage() {
   return (
     <div className="paper-container max-w-3xl py-14 md:py-20">
       <Link
-        to="/"
+        to="/home"
         data-testid="publish-back"
         className="inline-flex items-center gap-2 text-sm text-muted-foreground transition hover:text-foreground"
       >

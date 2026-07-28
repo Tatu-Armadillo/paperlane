@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Hero from '@/components/Hero.tsx';
 import SearchBar from '@/components/SearchBar.tsx';
@@ -15,7 +15,7 @@ import { Category } from '@/api/interfaces/Category';
 
 const PAGE_SIZE = 6;
 
-export default function HomePage() {
+const HomePage: React.FC = () => {
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [type, setType] = useState('all');
@@ -164,3 +164,5 @@ export default function HomePage() {
     </>
   );
 }
+
+export default HomePage;

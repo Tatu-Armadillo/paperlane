@@ -1,18 +1,62 @@
-import { createContext, useCallback, useContext, useState } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useState,
+  ReactNode,
+} from 'react';
 import { CheckCircle2, AlertTriangle, Info, X } from 'lucide-react';
 
-const ToastContext = createContext({ push: () => {} });
+type ToastVariant = 'success' | 'error' | 'info';
+
+interface ToastOptions {
+  title?: string;
+  description?: string;
+  variant?: ToastVariant;
+  duration?: number;
+}
+
+interface Toast extends Required<Omit<ToastOptions, 'duration'>> {
+  id: number;
+}
+
+interface ToastContextType {
+  push: (toast: ToastOptions) => void;
+}
+
+const ToastContext = createContext<ToastContextType>({
+  push: () => { },
+});
 
 let idCounter = 0;
 
-export function ToastProvider({ children }) {
-  const [toasts, setToasts] = useState([]);
+interface ToastProviderProps {
+  children: ReactNode;
+}
+
+export function ToastProvider({ children }: ToastProviderProps) {
+  const [toasts, setToasts] = useState<Toast[]>([]);
 
   const push = useCallback(
-    ({ title, description, variant = 'info', duration = 4000 }) => {
+    ({
+      title,
+      description,
+      variant = 'info',
+      duration = 4000,
+    }: ToastOptions) => {
       idCounter += 1;
       const id = idCounter;
-      setToasts((prev) => [...prev, { id, title, description, variant }]);
+
+      setToasts((prev) => [
+        ...prev,
+        {
+          id,
+          title: title ?? '',
+          description: description ?? '',
+          variant,
+        },
+      ]);
+
       window.setTimeout(() => {
         setToasts((prev) => prev.filter((t) => t.id !== id));
       }, duration);
@@ -20,7 +64,9 @@ export function ToastProvider({ children }) {
     [],
   );
 
-  const dismiss = (id) => setToasts((prev) => prev.filter((t) => t.id !== id));
+  const dismiss = (id: number) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  };
 
   return (
     <ToastContext.Provider value={{ push }}>

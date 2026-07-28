@@ -1,19 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  HttpCode,
-  NotFoundException,
-  Param,
-  ParseIntPipe,
-  Post,
-  Put,
-  Query,
-  Res,
-  UploadedFile,
-  UseInterceptors,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, NotFoundException, Param, ParseIntPipe, Post, Put, Query, Res, UploadedFile, UseGuards, UseInterceptors, } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import * as path from 'path';
@@ -23,6 +8,7 @@ import type { Response } from 'express';
 import { DocumentsService, UPLOAD_DIR } from './documents.service';
 import { CreateDocumentDto, UpdateDocumentDto } from './dto';
 import { DocumentType } from './document.entity';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 const multerOptions = {
   storage: diskStorage({
@@ -46,7 +32,7 @@ const multerOptions = {
 
 @Controller('documents')
 export class DocumentsController {
-  constructor(private readonly service: DocumentsService) {}
+  constructor(private readonly service: DocumentsService) { }
 
   @Get()
   list(
@@ -79,6 +65,7 @@ export class DocumentsController {
   }
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('file', multerOptions))
   create(
     @Body() dto: CreateDocumentDto,
@@ -88,6 +75,7 @@ export class DocumentsController {
   }
 
   @Put(':id')
+  @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('file', multerOptions))
   update(
     @Param('id', ParseIntPipe) id: number,
@@ -98,6 +86,7 @@ export class DocumentsController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   @HttpCode(204)
   async remove(@Param('id', ParseIntPipe) id: number) {
     await this.service.remove(id);

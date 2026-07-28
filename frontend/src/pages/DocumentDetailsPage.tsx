@@ -56,7 +56,7 @@ export default function DocumentDetailsPage() {
           title="This document doesn't exist"
           description={error || 'It may have been removed from the library.'}
           action={
-            <Link to="/" className="paper-btn-primary">
+            <Link to="/home" className="paper-btn-primary">
               Back to library
             </Link>
           }
@@ -73,7 +73,7 @@ export default function DocumentDetailsPage() {
   return (
     <article className="paper-container max-w-4xl py-14 md:py-20">
       <Link
-        to="/"
+        to="/home"
         data-testid="doc-back"
         className="inline-flex items-center gap-2 text-sm text-muted-foreground transition hover:text-foreground"
       >
