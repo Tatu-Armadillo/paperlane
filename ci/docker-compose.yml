@@ -1,0 +1,40 @@
+services:
+  backend:
+    build:
+      context: ../backend
+    container_name: backend
+    environment:
+      CORS_ORIGIN: http://localhost
+      NEST_PORT: 3000
+      JWT_SECRET: secret_key_for_jwt_authentication_123456
+      JWT_EXPIRATION: 15m
+    expose:
+      - "3000"
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ../frontend
+      args:
+        VITE_BACKEND_URL: /api
+        REACT_APP_BACKEND_URL: /api
+        WDS_SOCKET_PORT: 443
+        ENABLE_HEALTH_CHECK: "false"
+    container_name: frontend
+    expose:
+      - "5173"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - frontend
+      - backend
+    restart: unless-stopped
