@@ -14,7 +14,7 @@ import { UserEntity } from '../users/user.entity';
     UserModule,
     PassportModule,
     JwtModule.register({
-      secret: process.env.JWT_SECRET || 'cep_secret_key_for_jwt_authentication_Brazilian_system_2025',
+      secret: process.env.JWT_SECRET || 'ecret_key_for_jwt_authentication_123456',
       signOptions: { expiresIn: process.env.JWT_EXPIRATION || '15m' },
     }),
   ],

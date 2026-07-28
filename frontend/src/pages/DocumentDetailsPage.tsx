@@ -9,7 +9,7 @@ import Loading from '../components/Loading.tsx';
 import EmptyState from '../components/EmptyState.tsx';
 import Modal from '../components/Modal.tsx';
 import { useToast } from '../hooks/useToast.tsx';
-import { Document } from '@/api/interfaces/Documents.ts';
+import { Document } from '@/types/Documents.ts';
 
 export default function DocumentDetailsPage() {
   const { id } = useParams();

@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
 import { ArrowUpRight, Download, Eye } from 'lucide-react';
 import TypeBadge from './TypeBadge.jsx';
-import { formatDate, readTimeFromText, formatBytes } from '../utils/format.js';
-import { downloadUrl, previewUrl } from '../api/documents.js';
-import { Document } from '@/api/interfaces/Documents.js';
+import { formatDate, readTimeFromText, formatBytes } from '@/utils/format.ts';
+import { downloadUrl, previewUrl } from '@/api/documents.ts';
+import { Document } from '@/types/Documents';
 
 interface PublicationCardProps {
     doc: Document;

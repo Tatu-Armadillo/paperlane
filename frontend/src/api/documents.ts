@@ -1,5 +1,5 @@
 import http, { API_ROOT } from './http';
-import { DocumentPage, Document } from './interfaces/Documents';
+import { DocumentPage, Document } from '@/types/Documents';
 
 export async function listDocuments(params: Record<string, unknown> = {},): Promise<DocumentPage> {
   const { data } = await http.get<DocumentPage>('/documents', { params });

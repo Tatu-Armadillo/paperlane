@@ -1,6 +1,6 @@
 import { Download, ExternalLink, FileWarning } from 'lucide-react';
 import { previewUrl, downloadUrl } from '../api/documents.ts';
-import { Document } from '@/api/interfaces/Documents.ts';
+import { Document } from '@/types/Documents.ts';
 
 export default function DocumentViewer(doc: Document) {
   if (!doc) return null;

@@ -1,8 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { UploadCloud, X, FileText } from 'lucide-react';
+import { UploadCloud, X, FileText, FileTextIcon, BookOpen, Boxes, Feather, Image as ImageIcon, } from 'lucide-react';
 import { DOCUMENT_TYPES, formatBytes, classNames } from '@/utils/format.js';
 import { listCategories } from '@/api/categories.js';
-import { FileText as FileTextIcon, BookOpen, Boxes, Feather, Image as ImageIcon, } from 'lucide-react';
 
 const ICONS = {
   article: FileTextIcon,
@@ -10,6 +9,14 @@ const ICONS = {
   project: Boxes,
   short_story: Feather,
   image: ImageIcon,
+};
+
+type ValidationErrors = {
+  type?: string;
+  title?: string;
+  description?: string;
+  categoryId?: string;
+  file?: string;
 };
 
 export default function UploadForm({ onSubmit, submitting }) {
@@ -22,7 +29,7 @@ export default function UploadForm({ onSubmit, submitting }) {
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [file, setFile] = useState(null);
   const [dragging, setDragging] = useState(false);
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<ValidationErrors>({});
   const fileInputRef = useRef(null);
   const catBoxRef = useRef(null);
 
@@ -54,7 +61,7 @@ export default function UploadForm({ onSubmit, submitting }) {
   const chosenCategory = categories.find((c) => String(c.id) === String(categoryId));
 
   const validate = () => {
-    const e = {};
+    const e: ValidationErrors = {};
     if (!type) e.type = 'Please choose a document type';
     if (!title.trim()) e.title = 'Give your document a title';
     if (!description.trim()) e.description = 'Add a short description';

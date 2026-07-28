@@ -1,5 +1,5 @@
 import { ChevronDown } from 'lucide-react';
-import { Category } from '@/api/interfaces/Category';
+import { Category } from '@/types/Category';
 
 interface CategoryFilterProps {
   value: number | null;

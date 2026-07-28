@@ -6,7 +6,7 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
 
-  const corsOrigin = process.env.CORS_ORIGIN || 'http://localhost:3000';
+  const corsOrigin = process.env.CORS_ORIGIN || 'http://localhost:5173';
 
   app.enableCors({
     origin: corsOrigin,
@@ -30,7 +30,7 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Paper Management API')
-    .setDescription('API for managing Paper Codes (CEP)')
+    .setDescription('API for managing Paper')
     .setVersion('1.0')
     .addBearerAuth()
     .build();
@@ -38,7 +38,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, document);
 
-  const port = Number(process.env.NEST_PORT || 8002);
+  const port = Number(process.env.NEST_PORT || 3000);
 
   await app.listen(port, '0.0.0.0');
 

@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
-import { User, LoginDto, RegisterDto } from '../types';
+import { User, LoginDto, RegisterDto } from '@/types/User';
 import { authApi } from '../api/auth';
 
 interface AuthContextType {
@@ -30,6 +30,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             } catch (error) {
                 localStorage.removeItem('access_token');
                 localStorage.removeItem('user');
+                console.error(error);
             }
         }
         setLoading(false);
@@ -43,10 +44,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     };
 
     const register = async (data: RegisterDto) => {
-        const response = await authApi.register(data);
-        localStorage.setItem('access_token', response.access_token);
-        localStorage.setItem('user', JSON.stringify(response.user));
-        setUser(response.user);
+        // const response = await authApi.register(data);
+        // localStorage.setItem('access_token', response.access_token);
+        // localStorage.setItem('user', JSON.stringify(response.user));
+        // setUser(response.user);
     };
 
     const logout = () => {

@@ -1,4 +1,4 @@
-import { Document } from '@/api/interfaces/Documents';
+import { Document } from '@/types/Documents';
 import DocumentCard from '@/components/DocumentCard';
 
 interface DocumentGridProps {

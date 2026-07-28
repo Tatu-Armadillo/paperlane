@@ -9,9 +9,9 @@ import Pagination from '@/components/Pagination.tsx';
 import EmptyState from '@/components/EmptyState.tsx';
 import { listDocuments } from '@/api/documents.ts';
 import { listCategories } from '@/api/categories.js';
-import { Document } from '@/api/interfaces/Documents';
+import { Document } from '@/types/Documents';
 import { PenLine, LibraryBig } from 'lucide-react';
-import { Category } from '@/api/interfaces/Category';
+import { Category } from '@/types/Category';
 
 const PAGE_SIZE = 6;
 

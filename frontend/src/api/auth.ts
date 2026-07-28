@@ -1,5 +1,5 @@
 import http from './http';
-import { AuthResponse, LoginDto } from '../types';
+import { AuthResponse, LoginDto, User } from '@/types/User';
 
 export const authApi = {
 
@@ -8,4 +8,8 @@ export const authApi = {
         return response.data;
     },
 
+    getMe: async (): Promise<User> => {
+        const response = await http.get<User>('/auth/me');
+        return response.data;
+    },
 };

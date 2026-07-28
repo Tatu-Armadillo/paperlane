@@ -1,5 +1,5 @@
 import http from './http';
-import type { Category, CategoryPage } from '@/api/interfaces/Category';
+import type { Category, CategoryPage } from '@/types/Category';
 
 export async function listCategories(params: Record<string, unknown> = {}): Promise<CategoryPage> {
   const { data } = await http.get<CategoryPage>('/categories', { params });

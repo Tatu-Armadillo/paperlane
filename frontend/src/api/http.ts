@@ -1,10 +1,12 @@
 import axios from 'axios';
 
-const BASE = import.meta.env.VITE_BACKEND_URL || import.meta.env.VITE_REACT_APP_BACKEND_URL;
+const BASE = import.meta.env.VITE_BACKEND_URL;
 if (!BASE) {
   // eslint-disable-next-line no-console
   console.warn('[paperlane] VITE_BACKEND_URL is not defined. API calls will fail.');
 }
+
+console.log(BASE) // está saindo http://localhost:3000
 
 export const API_ROOT = `${BASE}/api`;
 
