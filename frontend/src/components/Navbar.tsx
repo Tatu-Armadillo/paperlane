@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { BookOpenText, Moon, Sun, PenLine, LayoutList } from 'lucide-react';
+import { BookOpenText, Moon, Sun, PenLine } from 'lucide-react';
 import { useTheme } from '../hooks/useTheme.tsx';
 import { classNames } from '../utils/format.js';
 import { useAuth } from '@/contexts/AuthContext';
@@ -13,8 +13,7 @@ const Navbar: React.FC = () => {
   const links = [
     { to: '/home', label: 'Library' },
     { to: '/publish', label: 'Publish', isAuthenticated: true },
-    { to: '/categories', label: 'Categories', isAuthenticated: true },
-    { to: '/login', label: 'Login', guestOnly: true },
+    { to: '/categories', label: 'Categories', isAuthenticated: true }
   ];
 
   return (
@@ -43,7 +42,6 @@ const Navbar: React.FC = () => {
           {links
             .filter((link) => {
               if (link.isAuthenticated) return isAuthenticated;
-              if (link.guestOnly) return !isAuthenticated;
               return true;
             })
             .map((l) => {
@@ -81,22 +79,13 @@ const Navbar: React.FC = () => {
               <Moon className="h-4 w-4" />
             )}
           </button>
-          {isAuthenticated && (
+          {!isAuthenticated && (
             <Link
-              to="/publish"
+              to="/Login"
               className="paper-btn-ghost hidden sm:inline-flex"
             >
               <PenLine className="h-3.5 w-3.5" />
-              Publish
-            </Link>
-          )}
-
-          {isAuthenticated && (
-            <Link
-              to="/categories"
-              className="paper-btn-ghost md:hidden"
-            >
-              <LayoutList className="h-3.5 w-3.5" />
+              Login
             </Link>
           )}
         </div>
