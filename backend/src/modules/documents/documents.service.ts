@@ -1,10 +1,6 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, ILike, FindOptionsWhere } from 'typeorm';
+import { Repository } from 'typeorm';
 import * as fs from 'fs';
 import * as path from 'path';
 import { DocumentEntity, DOCUMENT_TYPES, DocumentType } from './document.entity';
@@ -116,24 +112,29 @@ export class DocumentsService {
 
   async create(
     dto: CreateDocumentDto,
-    file: Express.Multer.File,
+    file?: Express.Multer.File,
   ): Promise<DocumentEntity> {
-    if (!file) throw new BadRequestException('File is required');
     if (!DOCUMENT_TYPES.includes(dto.type)) {
       throw new BadRequestException('Invalid document type');
     }
+
     const category = await this.categoriesService.findOne(dto.categoryId);
 
-    const { isText } = this.classifyFile(file.originalname, file.mimetype);
+    let isText = false;
     let textContent: string | null = null;
-    if (isText) {
-      try {
-        textContent = fs.readFileSync(file.path, 'utf-8');
-        if (textContent.length > 500_000) {
-          textContent = textContent.slice(0, 500_000);
+
+    if (file) {
+      ({ isText } = this.classifyFile(file.originalname, file.mimetype));
+
+      if (isText) {
+        try {
+          textContent = fs.readFileSync(file.path, 'utf-8');
+          if (textContent.length > 500_000) {
+            textContent = textContent.slice(0, 500_000);
+          }
+        } catch {
+          textContent = null;
         }
-      } catch {
-        textContent = null;
       }
     }
 
@@ -142,13 +143,14 @@ export class DocumentsService {
       title: dto.title,
       description: dto.description,
       category,
-      storedFilename: path.basename(file.path),
-      originalFilename: file.originalname,
-      mimeType: file.mimetype || 'application/octet-stream',
-      fileSize: file.size,
+      storedFilename: file ? path.basename(file.path) : null,
+      originalFilename: file?.originalname ?? null,
+      mimeType: file?.mimetype ?? null,
+      fileSize: file?.size ?? 0,
       isText,
       textContent,
     });
+
     return this.repo.save(entity);
   }
 

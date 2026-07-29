@@ -1,7 +1,7 @@
 export interface Category {
   id: number;
-  name: string;
-  description?: string;
+  key: string;
+  value: string;
 }
 
 export interface CategoryPage {

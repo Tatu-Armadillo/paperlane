@@ -28,8 +28,8 @@ export default function CategoryFilter({
         <option value="">All categories</option>
 
         {categories.map((c) => (
-          <option key={c.id} value={c.id}>
-            {c.description}
+          <option key={c.key} value={c.id}>  
+            {c.value}
           </option>
         ))}
       </select>

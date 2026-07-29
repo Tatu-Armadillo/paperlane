@@ -1,6 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
 import { Exclude } from 'class-transformer';
-import { DocumentEntity } from '../documents/document.entity';
+// import { DocumentEntity } from '../documents/document.entity';
 
 @Entity('users')
 export class UserEntity {
@@ -20,6 +20,6 @@ export class UserEntity {
     @CreateDateColumn()
     createdAt: Date;
 
-    @OneToMany(() => DocumentEntity, (doc) => doc.user)
-    documents: DocumentEntity[];
+    // @OneToMany(() => DocumentEntity, (doc) => doc.user)
+    // documents: DocumentEntity[];
 }

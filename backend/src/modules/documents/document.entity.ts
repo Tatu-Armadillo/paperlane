@@ -1,15 +1,6 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, CreateDateColumn, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { CategoryEntity } from '../categories/category.entity';
-import { UserEntity } from '../users/user.entity';
+// import { UserEntity } from '../users/user.entity';
 
 export type DocumentType =
   | 'article'
@@ -49,18 +40,36 @@ export class DocumentEntity {
   @JoinColumn({ name: 'category_id' })
   category: CategoryEntity;
 
-  // File storage metadata (files live on disk; DB only holds references)
-  @Column({ type: 'varchar', length: 260, name: 'stored_filename' })
-  storedFilename: string;
+  @Column({
+    type: 'varchar',
+    length: 260,
+    name: 'stored_filename',
+    nullable: true,
+  })
+  storedFilename: string | null;
 
-  @Column({ type: 'varchar', length: 260, name: 'original_filename' })
-  originalFilename: string;
+  @Column({
+    type: 'varchar',
+    length: 260,
+    name: 'original_filename',
+    nullable: true,
+  })
+  originalFilename: string | null;
 
-  @Column({ type: 'varchar', length: 128, name: 'mime_type' })
-  mimeType: string;
+  @Column({
+    type: 'varchar',
+    length: 128,
+    name: 'mime_type',
+    nullable: true,
+  })
+  mimeType: string | null;
 
-  @Column({ type: 'integer', name: 'file_size' })
-  fileSize: number;
+  @Column({
+    type: 'integer',
+    name: 'file_size',
+    nullable: true,
+  })
+  fileSize: number | null;
 
   @Column({ type: 'boolean', name: 'is_text', default: false })
   isText: boolean;
@@ -68,12 +77,12 @@ export class DocumentEntity {
   @Column({ type: 'text', name: 'text_content', nullable: true })
   textContent: string | null;
 
-  @ManyToOne(() => UserEntity, (user) => user.documents, { eager: true })
-  @JoinColumn({ name: 'userId' })
-  user: UserEntity;
+  // @ManyToOne(() => UserEntity, (user) => user.documents, { eager: true })
+  // @JoinColumn({ name: 'userId' })
+  // user: UserEntity;
 
-  @Column()
-  userId: string;
+  // @Column()
+  // userId: string;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

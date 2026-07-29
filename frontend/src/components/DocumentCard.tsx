@@ -1,16 +1,16 @@
 import { Link } from 'react-router-dom';
-import { Download, Eye } from 'lucide-react';
+import { Eye } from 'lucide-react';
 import { getTypeMeta } from '@/utils/documentTypes';
 import { cn } from '@/utils/cn';
-import { Document } from '@/api/documents';
+import { Document } from '@/types/Documents';
 
 interface DocumentCardProps {
   key: string | number,
-  document: Document, 
+  document: Document,
   style: any
 }
 
-export default function DocumentCard({key, document, style }: DocumentCardProps) {
+export default function DocumentCard({ key, document, style }: DocumentCardProps) {
   const type = getTypeMeta(document.type);
   const Icon = type.icon;
   const docId = document.id ?? document.id ?? '';
@@ -55,9 +55,16 @@ export default function DocumentCard({key, document, style }: DocumentCardProps)
       </p>
 
       <div className="relative mt-6 flex items-center gap-2">
-        <button
+        <Link
+          to={docId ? `/documents/${encodeURIComponent(docId)}` : '#'}
+          data-testid={`document-card-title-link-${docId}`}
+          className="relative mt-5 block"
+        >
+          <Eye size={15} /> Preview
+        </Link>
+        {/* <button
           type="button"
-          // onClick={() => onPreview?.(document)}
+          onClick={() => onPreview?.(document)}
           data-testid={`document-card-preview-${docId}`}
           className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-full border border-border bg-background px-4 py-2.5 text-sm font-medium text-foreground transition-all hover:-translate-y-0.5 hover:border-foreground/30 active:scale-95"
         >
@@ -65,12 +72,12 @@ export default function DocumentCard({key, document, style }: DocumentCardProps)
         </button>
         <button
           type="button"
-          // onClick={() => onDownload?.(document)}
+          onClick={() => onDownload?.(document)}
           data-testid={`document-card-download-${docId}`}
           className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-full bg-foreground px-4 py-2.5 text-sm font-medium text-background transition-all hover:-translate-y-0.5 active:scale-95"
         >
           <Download size={15} /> Download
-        </button>
+        </button> */}
       </div>
     </article>
   );

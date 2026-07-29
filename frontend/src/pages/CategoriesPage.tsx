@@ -10,6 +10,11 @@ import Modal from '../components/Modal.tsx';
 
 const PAGE_SIZE = 10;
 
+type ValidationErrors = {
+  key?: string;
+  value?: string;
+};
+
 export default function CategoriesPage() {
   const [search, setSearch] = useState('');
   const [debounced, setDebounced] = useState('');
@@ -22,7 +27,7 @@ export default function CategoriesPage() {
   const [editing, setEditing] = useState(null);
   const [formKey, setFormKey] = useState('');
   const [formValue, setFormValue] = useState('');
-  const [formErrors, setFormErrors] = useState({});
+  const [formErrors, setFormErrors] = useState<ValidationErrors>({});
   const [saving, setSaving] = useState(false);
 
   const [deleteTarget, setDeleteTarget] = useState(null);
@@ -71,18 +76,38 @@ export default function CategoriesPage() {
     setFormOpen(true);
   };
 
-  const submitForm = async (e) => {
+  const submitForm = async (
+    e: React.FormEvent<HTMLFormElement>,
+  ): Promise<void> => {
     e.preventDefault();
-    const errs = {};
-    if (!formKey.trim()) errs.key = 'Key is required';
-    else if (!/^[a-z0-9][a-z0-9\-_]*$/.test(formKey.trim().toLowerCase()))
+
+    const errs: {
+      key?: string;
+      value?: string;
+    } = {};
+
+    if (!formKey.trim()) {
+      errs.key = 'Key is required';
+    } else if (!/^[a-z0-9][a-z0-9\-_]*$/.test(formKey.trim().toLowerCase())) {
       errs.key = 'Use lowercase letters, numbers, hyphens or underscores';
-    if (!formValue.trim()) errs.value = 'Display name is required';
+    }
+
+    if (!formValue.trim()) {
+      errs.value = 'Display name is required';
+    }
+
     setFormErrors(errs);
+
     if (Object.keys(errs).length) return;
+
     setSaving(true);
+
     try {
-      const payload = { key: formKey.trim().toLowerCase(), value: formValue.trim() };
+      const payload = {
+        key: formKey.trim().toLowerCase(),
+        value: formValue.trim(),
+      };
+
       if (editing) {
         await updateCategory(editing.id, payload);
         push({ variant: 'success', title: 'Category updated' });
@@ -90,14 +115,20 @@ export default function CategoriesPage() {
         await createCategory(payload);
         push({ variant: 'success', title: 'Category created' });
       }
+
       setFormOpen(false);
       load();
-    } catch (err) {
+    } catch (err: any) {
       const msg = err.paperlaneMessage || 'Save failed';
+
       if (msg.toLowerCase().includes('already exists')) {
         setFormErrors({ key: msg });
       } else {
-        push({ variant: 'error', title: 'Save failed', description: msg });
+        push({
+          variant: 'error',
+          title: 'Save failed',
+          description: msg,
+        });
       }
     } finally {
       setSaving(false);
@@ -159,7 +190,7 @@ export default function CategoriesPage() {
       <div className="mt-8">
         {loading && <Loading label="Loading categories…" />}
         {error && !loading && (
-          <EmptyState title="Something went wrong" description={error} icon={Tag} action={() => {}} />
+          <EmptyState title="Something went wrong" description={error} icon={Tag} action={() => { }} />
         )}
         {!loading && !error && data.items.length === 0 && (
           <EmptyState

@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
-import { ArrowUpRight, Download, Eye } from 'lucide-react';
+import { Download, Eye } from 'lucide-react';
 import TypeBadge from './TypeBadge.jsx';
 import { formatDate, readTimeFromText, formatBytes } from '@/utils/format.ts';
-import { downloadUrl, previewUrl } from '@/api/documents.ts';
+import { downloadUrl } from '@/api/documents.ts';
 import { Document } from '@/types/Documents';
 
 interface PublicationCardProps {
@@ -29,7 +29,7 @@ export default function PublicationCard({ doc, featured = false }: PublicationCa
                 <div className="flex items-center gap-2">
                     <TypeBadge type={doc.type} />
                     <span className="text-xs text-muted-foreground">
-                        {doc.category?.description}
+                        {doc.category?.value}
                     </span>
                 </div>
                 <span className="text-xs text-muted-foreground">
@@ -59,17 +59,13 @@ export default function PublicationCard({ doc, featured = false }: PublicationCa
             <footer className="mt-5 flex items-center justify-between border-t border-border/70 pt-4">
                 <span className="text-xs text-muted-foreground">{readMeta}</span>
                 <div className="flex items-center gap-2">
-                    <a
-                        href={previewUrl(doc.id)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        data-testid={`publication-preview-${doc.id}`}
-                        className="paper-btn-ghost !px-3 !py-1.5 text-xs"
-                        title="Preview"
+                    <Link
+                        to={doc.id ? `/documents/${encodeURIComponent(doc.id)}` : '#'}
+                        data-testid={`document-card-title-link-${doc.id}`}
+                        className="relative mt-5 block"
                     >
-                        <Eye className="h-3.5 w-3.5" />
-                        Preview
-                    </a>
+                        <Eye size={15} /> Preview
+                    </Link>
                     <a
                         href={downloadUrl(doc.id)}
                         data-testid={`publication-download-${doc.id}`}
@@ -82,13 +78,13 @@ export default function PublicationCard({ doc, featured = false }: PublicationCa
                 </div>
             </footer>
 
-            <Link
+            {/* <Link
                 to={`/documents/${doc.id}`}
                 aria-label={`Read ${doc.title}`}
                 className="absolute right-5 top-5 hidden text-muted-foreground/60 transition group-hover:text-accent md:block"
             >
                 <ArrowUpRight className="h-4 w-4" />
-            </Link>
+            </Link> */}
         </article>
     );
 }

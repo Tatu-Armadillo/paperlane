@@ -66,7 +66,7 @@ export default function UploadForm({ onSubmit, submitting }) {
     if (!title.trim()) e.title = 'Give your document a title';
     if (!description.trim()) e.description = 'Add a short description';
     if (!categoryId) e.categoryId = 'Choose a category';
-    if (!file) e.file = 'Attach a file';
+    // if (!file) e.file = 'Attach a file';
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -79,7 +79,9 @@ export default function UploadForm({ onSubmit, submitting }) {
     form.append('title', title.trim());
     form.append('description', description.trim());
     form.append('categoryId', categoryId);
-    form.append('file', file);
+    if (file) {
+      form.append('file', file);
+    }
     onSubmit(form);
   };
 
@@ -227,7 +229,7 @@ export default function UploadForm({ onSubmit, submitting }) {
 
       <div>
         <p className="paper-label">
-          File <span className="text-accent">*</span>
+          File
         </p>
         {!file ? (
           <div

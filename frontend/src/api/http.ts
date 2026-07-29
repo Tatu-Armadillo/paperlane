@@ -2,17 +2,24 @@ import axios from 'axios';
 
 const BASE = import.meta.env.VITE_BACKEND_URL;
 if (!BASE) {
-  // eslint-disable-next-line no-console
   console.warn('[paperlane] VITE_BACKEND_URL is not defined. API calls will fail.');
 }
-
-console.log(BASE) // está saindo http://localhost:3000
 
 export const API_ROOT = `${BASE}/api`;
 
 const http = axios.create({
   baseURL: API_ROOT,
   timeout: 60_000,
+});
+
+http.interceptors.request.use((config) => {
+  const token = localStorage.getItem('access_token');
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
 });
 
 http.interceptors.response.use(
@@ -23,8 +30,10 @@ http.interceptors.response.use(
       err?.response?.data?.error ||
       err?.message ||
       'Request failed';
+
     const normalized = Array.isArray(message) ? message.join(', ') : message;
     err.paperlaneMessage = normalized;
+
     return Promise.reject(err);
   },
 );
